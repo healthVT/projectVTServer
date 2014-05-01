@@ -2,7 +2,7 @@ package projectVT
 
 class Vitamin {
 
-    Food foodId
+    Food food
     double vitaminA
     double vitaminARAE
     double vitaminAIU
@@ -18,6 +18,6 @@ class Vitamin {
     double pantothenic
 
     static constraints = {
-        foodId nullable: false
+        food nullable: false
     }
 }

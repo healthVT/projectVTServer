@@ -2,7 +2,7 @@ dataSource {
     pooled = true
     driverClassName = "com.mysql.jdbc.Driver"
     username = "jjtempc2"
-    password = "koe7POut"
+    password = "sUPuteP6"
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -16,7 +16,7 @@ environments {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://jjtemp.com/jjtempc2_projectVT?useUnicode=yes&characterEncoding=UTF-8"
             username = "jjtempc2"
-            password = "koe7POut"
+            password = "sUPuteP6"
         }
     }
     test {
@@ -24,7 +24,7 @@ environments {
             dbCreate = "update"
             url = "jdbc:mysql://jjtemp.com/jjtempc2_projectVT?useUnicode=yes&characterEncoding=UTF-8"
             username = "jjtempc2"
-            password = "koe7POut"
+            password = "sUPuteP6"
         }
     }
     production {
@@ -32,7 +32,7 @@ environments {
             dbCreate = "update"
             url = "jdbc:mysql://jjtemp.com/jjtempc2_projectVT?useUnicode=yes&characterEncoding=UTF-8"
             username = "jjtempc2"
-            password = "koe7POut"
+            password = "sUPuteP6"
             pooled = true
             properties {
                 maxActive = -1
