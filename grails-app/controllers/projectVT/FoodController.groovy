@@ -26,7 +26,7 @@ class FoodController {
 
             def vitamin = Vitamin.findByFood(food)
             vitamin.each(){ vi ->
-                vitaminMap = [vitaminA: vi.vitaminA, vitaminB1: vi.vitaminB1, vitaminB12: vi.vitaminB12, vitaminB2: vi.vitaminB2, vitaminB3: vi.vitaminB3, vitaminB6: vi.vitaminB6, vitaminC: vi.vitaminC, vitaminD: vi.vitaminD, vitaminE: vi.vitaminE, vitaminK: vi.vitaminK, pantothenic: vi.pantothenic]
+                vitaminMap = [a: vi.vitaminA, b1: vi.vitaminB1, b12: vi.vitaminB12, b2: vi.vitaminB2, b3: vi.vitaminB3, b6: vi.vitaminB6, c: vi.vitaminC, d: vi.vitaminD, e: vi.vitaminE, k: vi.vitaminK, pantothenic: vi.pantothenic]
             }
         }
 
