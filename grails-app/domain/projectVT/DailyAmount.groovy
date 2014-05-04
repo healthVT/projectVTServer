@@ -1,9 +1,19 @@
 package projectVT
 
-class Vitamin {
+public enum Gender{
+    MALE(1), FEMALE(2)
+    private int value;
 
-    Food food
-    int gram
+    private Gender(int value){
+        this.value = value;
+    }
+}
+
+class DailyAmount {
+
+    int minAge
+    int maxAge
+    String gender
     double vitaminA
     double vitaminARAE
     double vitaminAIU
@@ -19,6 +29,5 @@ class Vitamin {
     double pantothenic
 
     static constraints = {
-        food nullable: false
     }
 }
