@@ -30,7 +30,7 @@ class FoodController {
             }
         }
 
-        result = [vitamin: vitaminMap, success: true]
+        result = [vitamin: vitaminMap, foodName: foodName, success: true]
         render result as JSON
     }
 
