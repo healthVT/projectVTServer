@@ -97,7 +97,7 @@ class FoodController {
                 e:  df.format(vitaminE/requireMap.e*100),
                 k:  df.format(vitaminK/requireMap.k*100)]
 
-        
+
         render resultMap as JSON
     }
 }
