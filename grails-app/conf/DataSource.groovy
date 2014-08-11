@@ -14,24 +14,24 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://jjtemp.com/jjtempc2_projectVT?useUnicode=yes&characterEncoding=UTF-8"
-            username = "jjtempc2"
+            url = "jdbc:mysql://midawn.com/midawnc1_foodmula?useUnicode=yes&characterEncoding=UTF-8"
+            username = "midawnc1"
             password = "sUPuteP6"
         }
     }
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://jjtemp.com/jjtempc2_projectVT?useUnicode=yes&characterEncoding=UTF-8"
-            username = "jjtempc2"
+            url = "jdbc:mysql://midawn.com/midawnc1_foodmula?useUnicode=yes&characterEncoding=UTF-8"
+            username = "midawnc1"
             password = "sUPuteP6"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://jjtemp.com/jjtempc2_projectVT?useUnicode=yes&characterEncoding=UTF-8"
-            username = "jjtempc2"
+            url = "jdbc:mysql://midawn.com/midawnc1_foodmula?useUnicode=yes&characterEncoding=UTF-8"
+            username = "midawnc1"
             password = "sUPuteP6"
             pooled = true
             properties {

@@ -112,5 +112,46 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
 }
 grails.views.gsp.encoding="UTF-8"
+
+grails.plugin.springsecurity.rest.login.usernamePropertyName = 'email'
+grails.plugin.springsecurity.rest.login.passwordPropertyName = 'password'
+grails.plugin.springsecurity.rest.login.endpointUrl = '/login'
+grails.plugin.springsecurity.rest.login.useRequestParamsCredentials = true
+grails.plugin.springsecurity.rest.login.useJsonCredentials = true
+grails.plugin.springsecurity.rest.login.failureStatusCode = 401
+grails.plugin.springsecurity.rest.token.validation.enableAnonymousAccess = true
+grails.plugin.springsecurity.filterChain.chainMap = [
+        '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter',  // Stateless chain
+        '/user/**': 'anonymousAuthenticationFilter,restTokenValidationFilter,restExceptionTranslationFilter,filterInvocationInterceptor'
+        //'/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter',                                          // Traditional chain
+]
+
+grails.plugin.springsecurity.rest.token.storage.useGorm = true
+grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = "projectVT.AuthenticationToken"
+grails.plugin.springsecurity.rest.token.storage.gorm.tokenValuePropertyName = "token"
+grails.plugin.springsecurity.rest.token.storage.gorm.usernamePropertyName = "email"
+// Added by the Spring Security Core plugin:
+//grails.plugin.springsecurity.auth.loginFormUrl = '/'
+
+
+grails.plugin.springsecurity.userLookup.usernamePropertyName = "email"
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'projectVT.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'projectVT.UserRole'
+grails.plugin.springsecurity.authority.className = 'senorldroll.Role'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+        '/index':                         ['permitAll'],
+        '/index.gsp':                     ['permitAll'],
+        '/assets/**':                     ['permitAll'],
+        '/**/js/**':                      ['permitAll'],
+        '/**/css/**':                     ['permitAll'],
+        '/**/images/**':                  ['permitAll'],
+        '/**/favicon.ico':                ['permitAll'],
+        '/**':                            ['ROLE_ADMIN', 'ROLE_USER'],
+        '/web/**':                        ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/user/**':                       ['IS_AUTHENTICATED_ANONYMOUSLY']
+]
+
+

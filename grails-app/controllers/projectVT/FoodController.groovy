@@ -1,12 +1,15 @@
 package projectVT
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
+import org.joda.time.DateTime
 
 import java.text.DecimalFormat
 
-
+@Secured(['ROLE_USER'])
 class FoodController {
-
+    def springSecurityService
+    
     def index() { }
 
     def getFoodList(String category){
@@ -97,6 +100,23 @@ class FoodController {
                 e:  df.format(vitaminE/requireMap.e*100),
                 k:  df.format(vitaminK/requireMap.k*100)]
 
+        try{
+            User user = springSecurityService.getCurrentUser() as User
+            def today = DateTime.now().withTime(0, 0, 0, 0);
+            def userDailyFood = UserDailyFood.findAllByUserAndDateBetween(user, today.toDate(), today.plusDays(1).toDate())
+            UserDailyFood.executeUpdate("DELETE UserDailyFood WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
+            println userDailyFood
+
+            if(userDailyFood){
+            }
+            foodAndAmountArray.each(){
+                def array = it.split(":")
+                new UserDailyFood(user: user, food: Food.findByName(array[0]), amount: Integer.parseInt(array[1])).save(flush: true, failOnError: true)
+            }
+
+        }catch(Exception e){
+            log.error("Error on save daily record to database.", e)
+        }
 
         render resultMap as JSON
     }
