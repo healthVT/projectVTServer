@@ -30,7 +30,7 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:8080/midawnc1_foodmula?useUnicode=yes&characterEncoding=UTF-8"
+            url = "jdbc:mysql://midawn.com/midawnc1_foodmula?useUnicode=yes&characterEncoding=UTF-8"
             username = "midawnc1"
             password = "sUPuteP6"
             pooled = true
