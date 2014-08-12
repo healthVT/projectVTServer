@@ -3,7 +3,7 @@ package projectVT
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.joda.time.DateTime
-
+import static grails.async.Promises.*
 import java.text.DecimalFormat
 
 @Secured(['ROLE_USER'])
@@ -100,24 +100,48 @@ class FoodController {
                 e:  df.format(vitaminE/requireMap.e*100),
                 k:  df.format(vitaminK/requireMap.k*100)]
 
-        try{
-            User user = springSecurityService.getCurrentUser() as User
-            def today = DateTime.now().withTime(0, 0, 0, 0);
-            def userDailyFood = UserDailyFood.findAllByUserAndDateBetween(user, today.toDate(), today.plusDays(1).toDate())
-            UserDailyFood.executeUpdate("DELETE UserDailyFood WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
-            println userDailyFood
+        //task{recordIntoDatabase(foodAndAmountArray, resultMap)}
 
-            if(userDailyFood){
-            }
+        try{
+
+            User user = springSecurityService.getCurrentUser() as User
+            def today = DateTime.now().withTime(0, 0, 0, 0)
+            UserDailyFood.executeUpdate("DELETE UserDailyFood WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
+
             foodAndAmountArray.each(){
                 def array = it.split(":")
                 new UserDailyFood(user: user, food: Food.findByName(array[0]), amount: Integer.parseInt(array[1])).save(flush: true, failOnError: true)
             }
+
+            UserDailyVitamin.executeUpdate("DELETE UserDailyVitamin WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
+
+            new UserDailyVitamin(user: user, vitaminA: resultMap.a ,vitaminAIU: resultMap.a ,vitaminC: resultMap.c ,vitaminD: resultMap.d ,vitaminE: resultMap.e ,vitaminK: resultMap.k ,vitaminB1: resultMap.b1 ,vitaminB2: resultMap.b2 ,vitaminB3: resultMap.b3 ,vitaminB6: resultMap.b6 ,vitaminB12: resultMap.b12).save(flush: true, failOnError: true)
 
         }catch(Exception e){
             log.error("Error on save daily record to database.", e)
         }
 
         render resultMap as JSON
+    }
+
+    public void recordIntoDatabase(def foodAndAmountArray, def resultMap){
+        try{
+
+            User user = springSecurityService.getCurrentUser() as User
+            def today = DateTime.now().withTime(0, 0, 0, 0)
+            UserDailyFood.executeUpdate("DELETE UserDailyFood WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
+
+            foodAndAmountArray.each(){
+                def array = it.split(":")
+                new UserDailyFood(user: user, food: Food.findByName(array[0]), amount: Integer.parseInt(array[1])).save(flush: true, failOnError: true)
+            }
+
+            UserDailyVitamin.executeUpdate("DELETE UserDailyVitamin WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
+
+            new UserDailyVitamin(user: user, vitaminA: resultMap.a ,vitaminAIU: resultMap.a ,vitaminC: resultMap.c ,vitaminD: resultMap.d ,vitaminE: resultMap.e ,vitaminK: resultMap.k ,vitaminB1: resultMap.b1 ,vitaminB2: resultMap.b2 ,vitaminB3: resultMap.b3 ,vitaminB6: resultMap.b6 ,vitaminB12: resultMap.b12).save(flush: true, failOnError: true)
+
+        }catch(Exception e){
+            log.error("Error on save daily record to database.", e)
+        }
     }
 }
