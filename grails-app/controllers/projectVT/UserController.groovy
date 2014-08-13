@@ -39,9 +39,4 @@ class UserController {
         render result as JSON
     }
 
-    @Secured(['ROLE_USER'])
-    def test(){
-        render "test"
-    }
-
 }

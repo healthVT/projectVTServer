@@ -2,14 +2,14 @@ package projectVT
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.joda.time.DateTime
-import static grails.async.Promises.*
 import java.text.DecimalFormat
 
 @Secured(['ROLE_USER'])
 class FoodController {
     def springSecurityService
-    
+    def utilService
     def index() { }
 
     def getFoodList(String category){
@@ -124,6 +124,21 @@ class FoodController {
         render resultMap as JSON
     }
 
+    def getVitaminRecord(String period){
+        try{
+            User user = springSecurityService.getCurrentUser() as User
+            def datePeriod = utilService.convertPeriod(period)
+            println datePeriod
+            def record = UserDailyVitamin.findByUserAndDateBetween(user, datePeriod.start.toDate(), datePeriod.end.toDate())
+            println record
+
+            render record as JSON
+        }catch(Exception e){
+            log.error("Error on getting vitamin Record: ", e)
+            render new JSONObject([success: false])
+        }
+    }
+
     public void recordIntoDatabase(def foodAndAmountArray, def resultMap){
         try{
 
@@ -142,6 +157,11 @@ class FoodController {
 
         }catch(Exception e){
             log.error("Error on save daily record to database.", e)
+            render new JSONObject([success: false])
         }
+
+        render new JSONObject([success: true])
     }
+
+
 }

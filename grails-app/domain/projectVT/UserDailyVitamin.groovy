@@ -5,9 +5,9 @@ class UserDailyVitamin {
     User user
     Date date = new Date()
 
-    double vitaminA
     double vitaminARAE
     double vitaminAIU
+    double vitaminA
     double vitaminC
     double vitaminD
     double vitaminE
