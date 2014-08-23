@@ -124,20 +124,47 @@ class FoodController {
         render resultMap as JSON
     }
 
-    def getVitaminRecord(String period){
+    def getVitaminRecord(String period, String vitaminName){
         try{
             User user = springSecurityService.getCurrentUser() as User
             def datePeriod = utilService.convertPeriod(period)
-            println datePeriod
-            def record = UserDailyVitamin.findByUserAndDateBetween(user, datePeriod.start.toDate(), datePeriod.end.toDate())
-            println record
 
-            render record as JSON
+            def record = UserDailyVitamin.findAllByUserAndDateBetween(user, datePeriod.start.toDate(), datePeriod.end.toDate(), [sort: 'date'])
+            List<UserDailyVitamin> resultList = new ArrayList<UserDailyVitamin>();
+            def date1
+            int i=0;
+            record.each(){
+                i++;
+
+                if(record.size() > i){
+                    DateTime dateTime1 = new DateTime(it.date);
+                    DateTime dateTime2 = new DateTime(record.get(i)?.date) ?: null
+
+                    if(dateTime1.plusDays(1).dayOfMonth() != dateTime2.dayOfMonth()){
+                        //record.add(i, new UserDailyVitamin(vitaminA: 0, vitaminB: 0, vitaminB1: 0, vitaminB2: 0, vitaminB3: 0, vitaminB6: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0 , vitaminE: 0 ,vitaminK: 0))
+                        resultList.add(it)
+                        resultList.add(new UserDailyVitamin(date: dateTime1.plusDays(1).toDate()))
+
+                    }else{
+                        resultList.add(it)
+                    }
+                }
+
+            }
+            def result = [success: true, vitaminRecordList: resultList]
+
+            resultList.each(){
+                println it
+                println it.date
+            }
+
+            render result as JSON
         }catch(Exception e){
             log.error("Error on getting vitamin Record: ", e)
             render new JSONObject([success: false])
         }
     }
+
 
     public void recordIntoDatabase(def foodAndAmountArray, def resultMap){
         try{

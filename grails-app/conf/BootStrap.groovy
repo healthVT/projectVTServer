@@ -4,6 +4,8 @@ import projectVT.User
 import projectVT.UserDailyVitamin
 import projectVT.UserRole
 
+import java.text.SimpleDateFormat
+
 class BootStrap {
 
     def init = { servletContext ->
@@ -18,6 +20,8 @@ class BootStrap {
         JSON.registerObjectMarshaller(UserDailyVitamin){
             def returnArray = [:]
 
+            SimpleDateFormat formatToString = new SimpleDateFormat("MM/dd")
+
             returnArray['id'] = it.id
             returnArray['vitaminA'] = it.vitaminA
             returnArray['vitaminC'] = it.vitaminC
@@ -29,8 +33,7 @@ class BootStrap {
             returnArray['vitaminB3'] = it.vitaminB3
             returnArray['vitaminB6'] = it.vitaminB6
             returnArray['vitaminB12'] = it.vitaminB12
-            returnArray['user'] = it.user
-
+            returnArray['date'] = formatToString.format(it.date)
 
             return returnArray
         }
