@@ -23,16 +23,16 @@ class BootStrap {
             SimpleDateFormat formatToString = new SimpleDateFormat("MM/dd")
 
             returnArray['id'] = it.id
-            returnArray['vitaminA'] = it.vitaminA
-            returnArray['vitaminC'] = it.vitaminC
-            returnArray['vitaminD'] = it.vitaminD
-            returnArray['vitaminE'] = it.vitaminE
-            returnArray['vitaminK'] = it.vitaminK
-            returnArray['vitaminB1'] = it.vitaminB1
-            returnArray['vitaminB2'] = it.vitaminB2
-            returnArray['vitaminB3'] = it.vitaminB3
-            returnArray['vitaminB6'] = it.vitaminB6
-            returnArray['vitaminB12'] = it.vitaminB12
+            returnArray['A'] = it.vitaminA
+            returnArray['C'] = it.vitaminC
+            returnArray['D'] = it.vitaminD
+            returnArray['E'] = it.vitaminE
+            returnArray['K'] = it.vitaminK
+            returnArray['B1'] = it.vitaminB1
+            returnArray['B2'] = it.vitaminB2
+            returnArray['B3'] = it.vitaminB3
+            returnArray['B6'] = it.vitaminB6
+            returnArray['B12'] = it.vitaminB12
             returnArray['date'] = formatToString.format(it.date)
 
             return returnArray
