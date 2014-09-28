@@ -10,13 +10,13 @@ class UtilService {
         def datePeriod = [:]
 
         switch(period){
-            case "MTD":
+            case "MONTH":
                 datePeriod = [start: today.minusMonths(1), end: today.withTime(23, 59, 59, 0)]
                 break;
-            case "YTD":
+            case "YEAR":
                 datePeriod = [start: today.minusYears(1), end: today.plusDays(1)]
                 break;
-            case "WTD":
+            case "WEEK":
             default:
                 datePeriod = [start: today.minusDays(7), end: today.withTime(23, 59, 59, 59)]
                 break;

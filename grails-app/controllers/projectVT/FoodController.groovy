@@ -138,7 +138,7 @@ class FoodController {
                 if(record.size() > i){
                     DateTime dateTime1 = new DateTime(it.date).plusDays(1);
                     DateTime dateTime2 = new DateTime(record?.get(i)?.date) ?: null
-                    
+
                     if(dateTime2 != null && dateTime1.dayOfMonth() != dateTime2.dayOfMonth()){
                         //record.add(i, new UserDailyVitamin(vitaminA: 0, vitaminB: 0, vitaminB1: 0, vitaminB2: 0, vitaminB3: 0, vitaminB6: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0 , vitaminE: 0 ,vitaminK: 0))
                         resultList.add(it)
@@ -153,11 +153,6 @@ class FoodController {
 
             }
             def result = [success: true, vitaminRecordList: resultList]
-
-            resultList.each(){
-                println it
-                println it.date
-            }
 
             render result as JSON
         }catch(Exception e){
