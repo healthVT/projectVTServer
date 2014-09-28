@@ -136,18 +136,18 @@ class FoodController {
                 i++;
 
                 if(record.size() > i){
-                    DateTime dateTime1 = new DateTime(it.date);
-                    DateTime dateTime2 = new DateTime(record.get(i)?.date) ?: null
-
-                    if(dateTime1.plusDays(1).dayOfMonth() != dateTime2.dayOfMonth()){
+                    DateTime dateTime1 = new DateTime(it.date).plusDays(1);
+                    DateTime dateTime2 = new DateTime(record?.get(i)?.date) ?: null
+                    
+                    if(dateTime2 != null && dateTime1.dayOfMonth() != dateTime2.dayOfMonth()){
                         //record.add(i, new UserDailyVitamin(vitaminA: 0, vitaminB: 0, vitaminB1: 0, vitaminB2: 0, vitaminB3: 0, vitaminB6: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0 , vitaminE: 0 ,vitaminK: 0))
                         resultList.add(it)
-                        resultList.add(new UserDailyVitamin(date: dateTime1.plusDays(1).toDate()))
+                        resultList.add(new UserDailyVitamin(date: dateTime1.toDate()))
 
                     }else{
                         resultList.add(it)
                     }
-                }else if(record.size() == 1){
+                }else if(record.size() == 1 || record.size() == i){
                     resultList.add(it)
                 }
 
