@@ -128,10 +128,9 @@ class FoodController {
         try{
             User user = springSecurityService.getCurrentUser() as User
             def datePeriod = utilService.convertPeriod(period)
-
             def record = UserDailyVitamin.findAllByUserAndDateBetween(user, datePeriod.start.toDate(), datePeriod.end.toDate(), [sort: 'date'])
-            List<UserDailyVitamin> resultList = new ArrayList<UserDailyVitamin>();
-            def date1
+
+            List<UserDailyVitamin> resultList = new ArrayList<UserDailyVitamin>()
             int i=0;
             record.each(){
                 i++;
@@ -148,6 +147,8 @@ class FoodController {
                     }else{
                         resultList.add(it)
                     }
+                }else if(record.size() == 1){
+                    resultList.add(it)
                 }
 
             }
