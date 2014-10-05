@@ -4,6 +4,7 @@ class UserDailyVitamin {
 
     User user
     Date date = new Date()
+    String dateString
 
     double vitaminARAE
     double vitaminAIU
@@ -21,5 +22,6 @@ class UserDailyVitamin {
 
     static constraints = {
         user nullable: false
+        dateString nullable: true
     }
 }

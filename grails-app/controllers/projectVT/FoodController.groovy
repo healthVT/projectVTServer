@@ -4,7 +4,10 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 
 @Secured(['ROLE_USER'])
 class FoodController {
@@ -115,7 +118,7 @@ class FoodController {
 
             UserDailyVitamin.executeUpdate("DELETE UserDailyVitamin WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
 
-            new UserDailyVitamin(user: user, vitaminA: resultMap.a ,vitaminAIU: resultMap.a ,vitaminC: resultMap.c ,vitaminD: resultMap.d ,vitaminE: resultMap.e ,vitaminK: resultMap.k ,vitaminB1: resultMap.b1 ,vitaminB2: resultMap.b2 ,vitaminB3: resultMap.b3 ,vitaminB6: resultMap.b6 ,vitaminB12: resultMap.b12).save(flush: true, failOnError: true)
+            new UserDailyVitamin(user: user, vitaminA: resultMap.a ,vitaminAIU: resultMap.a ,vitaminC: resultMap.c ,vitaminD: resultMap.d ,vitaminE: resultMap.e ,vitaminK: resultMap.k ,vitaminB1: resultMap.b1 ,vitaminB2: resultMap.b2 ,vitaminB3: resultMap.b3 ,vitaminB6: resultMap.b6 ,vitaminB12: resultMap.b12, dateString: utilService.jodaToString(today)).save(flush: true, failOnError: true)
 
         }catch(Exception e){
             log.error("Error on save daily record to database.", e)
@@ -124,32 +127,21 @@ class FoodController {
         render resultMap as JSON
     }
 
-    def getVitaminRecord(String period, String vitaminName){
+    def getVitaminRecord(String period){
         try{
+            println period
             User user = springSecurityService.getCurrentUser() as User
             def datePeriod = utilService.convertPeriod(period)
-            def record = UserDailyVitamin.findAllByUserAndDateBetween(user, datePeriod.start.toDate(), datePeriod.end.toDate(), [sort: 'date'])
 
-            List<UserDailyVitamin> resultList = new ArrayList<UserDailyVitamin>()
-            int i=0;
+            def record = UserDailyVitamin.executeQuery("select AVG(vitaminA) as A, AVG(vitaminB1) as B1, AVG(vitaminB2) as B2, AVG(vitaminB3) as B3, AVG(vitaminB6) as B6, AVG(vitaminB12) as B12, AVG(vitaminC) as C, AVG(vitaminD) as D, AVG(vitaminE) as E, AVG(vitaminK) as K, date from UserDailyVitamin WHERE date >= ? GROUP BY FROM_DAYS(TO_DAYS(date)-MOD(TO_DAYS(date), ?))", [datePeriod.startDate.toDate(), datePeriod.avgDatePeriod])
+
+            List<Map> resultList = new ArrayList<Map>()
+            SimpleDateFormat formatToString = new SimpleDateFormat("MM/dd")
             record.each(){
-                i++;
+                //turn record into object
+                def vitaminRecord = [A: it[0], B1: it[1], B2: it[2], B3: it[3], B6: it[4], B12: it[5], C: it[6], D: it[7], E: it[8], K: it[9], date: formatToString.format(it[10])]
 
-                if(record.size() > i){
-                    DateTime dateTime1 = new DateTime(it.date).plusDays(1);
-                    DateTime dateTime2 = new DateTime(record?.get(i)?.date) ?: null
-
-                    if(dateTime2 != null && dateTime1.dayOfMonth() != dateTime2.dayOfMonth()){
-                        //record.add(i, new UserDailyVitamin(vitaminA: 0, vitaminB: 0, vitaminB1: 0, vitaminB2: 0, vitaminB3: 0, vitaminB6: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0 , vitaminE: 0 ,vitaminK: 0))
-                        resultList.add(it)
-                        resultList.add(new UserDailyVitamin(date: dateTime1.toDate()))
-
-                    }else{
-                        resultList.add(it)
-                    }
-                }else if(record.size() == 1 || record.size() == i){
-                    resultList.add(it)
-                }
+                resultList.add(vitaminRecord)
 
             }
             def result = [success: true, vitaminRecordList: resultList]
