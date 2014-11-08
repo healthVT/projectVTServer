@@ -7,8 +7,8 @@ class User {
     String name
     int age = 0
     String gender
-    int height = 0
-    int weight = 0
+    float height = 0
+    float weight = 0
     String ethnicity
 
     String firstName

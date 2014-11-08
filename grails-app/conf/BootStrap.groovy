@@ -45,6 +45,19 @@ class BootStrap {
             returnArray['vitaminName'] = it.vitaminName
             returnArray['description'] = it.description
         }
+
+        JSON.registerObjectMarshaller(User){
+            def returnArray = [:]
+            returnArray['email'] = it.email
+            returnArray['name'] = it.name
+            returnArray['age'] = it.age
+            returnArray['gender'] = it.gender
+            returnArray['height'] = it.height
+            returnArray['weight'] = it.weight
+            returnArray['ethnicity'] = it.ethnicity
+
+            return returnArray
+        }
     }
     def destroy = {
     }

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 class UserController {
 
     static scaffold = true
+    def springSecurityService
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def loginOrRegister(String email, String password, String name, int age, String gender, int height, int weight, String ethnicity, boolean register){
@@ -37,6 +38,39 @@ class UserController {
         }
 
         render result as JSON
+    }
+
+    @Secured(['ROLE_USER'])
+    def getUserInfo(){
+        User user = springSecurityService.getCurrentUser() as User
+
+        def result = [success: true, user: user]
+        if(!user){
+            result = [success: false]
+        }
+
+        render result as JSON
+    }
+
+    @Secured(['ROLE_USER'])
+    def updateUserInfo(String email, String name, int age, String gender, float height, float weight, String ethnicity){
+        User user = springSecurityService.getCurrentUser() as User
+
+        if(!user){
+            render ([success: false] as JSON)
+        }
+
+        user.email = email
+        user.name = name
+        user.age = age
+        user.gender = gender
+        user.height = height
+        user.weight = weight
+        user.ethnicity = ethnicity
+
+        user.save(failOnError: true, flush: true)
+
+        render([success: true] as JSON)
     }
 
 }
