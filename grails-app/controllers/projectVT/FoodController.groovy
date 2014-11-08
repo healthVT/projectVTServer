@@ -56,6 +56,7 @@ class FoodController {
         int vitaminE = 0
         int vitaminK = 0
 
+        gender = gender ?: "Male"
         def vitaminRequire = DailyAmount.findByGender(gender)
         Map requireMap = [a:vitaminRequire.vitaminA,
                 b1:vitaminRequire.vitaminB1,

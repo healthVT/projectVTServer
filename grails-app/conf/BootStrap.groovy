@@ -3,6 +3,8 @@ import projectVT.Role
 import projectVT.User
 import projectVT.UserDailyVitamin
 import projectVT.UserRole
+import projectVT.Vitamin
+import projectVT.VitaminDes
 
 import java.text.SimpleDateFormat
 
@@ -36,6 +38,12 @@ class BootStrap {
             returnArray['date'] = formatToString.format(it.date)
 
             return returnArray
+        }
+
+        JSON.registerObjectMarshaller(VitaminDes){
+            def returnArray = [:]
+            returnArray['vitaminName'] = it.vitaminName
+            returnArray['description'] = it.description
         }
     }
     def destroy = {
