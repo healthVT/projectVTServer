@@ -40,6 +40,27 @@ class UserController {
         render result as JSON
     }
 
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def isUserRegistered(String email, String displayName, String gender, String birthdayString, String socialId, String socialMedia){
+        User user = User.findByEmail(email)
+
+        if(!user){
+            render([success: true, register: false] as JSON)
+            return
+        }
+
+        def auth = SocialAuth.findBySocialId(socialId) ?: new SocialAuth(user: user, socialMedia: socialMedia, socialId: socialId).save(failOnError: true)
+
+        def birthday = birthdayString ? new Date(birthdayString) : null
+        user.birthday = user.birthday ?: birthday
+        user.name = user.name ?: displayName
+        user.gender = user.gender ?: gender
+
+        user.save(failOnError: true)
+
+        render([success: true, register: true, socialConnect: true] as JSON)
+    }
+
     @Secured(['ROLE_USER'])
     def getUserInfo(){
         User user = springSecurityService.getCurrentUser() as User
@@ -72,5 +93,7 @@ class UserController {
 
         render([success: true] as JSON)
     }
+
+
 
 }
