@@ -71,7 +71,8 @@ class SocialAuthenticationFilter extends GenericFilterBean {
             }else{
                 response.contentType = 'application/json'
                 response.characterEncoding = 'UTF-8'
-                response << [success: true, isUser: false] as JSON
+                def result = [success: true, isUser: false] as JSON
+                response << result.toString()
                 return
             }
         }
