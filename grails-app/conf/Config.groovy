@@ -125,7 +125,8 @@ grails.plugin.springsecurity.rest.login.failureStatusCode = 401
 grails.plugin.springsecurity.rest.token.validation.enableAnonymousAccess = true
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter',  // Stateless chain
-        '/user/**': 'anonymousAuthenticationFilter,restTokenValidationFilter,restExceptionTranslationFilter,filterInvocationInterceptor'
+        '/user/**': 'anonymousAuthenticationFilter,restTokenValidationFilter,restExceptionTranslationFilter,filterInvocationInterceptor',
+        '/test/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'
         //'/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter',                                          // Traditional chain
 ]
 
@@ -133,6 +134,11 @@ grails.plugin.springsecurity.rest.token.storage.useGorm = true
 grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = "projectVT.AuthenticationToken"
 grails.plugin.springsecurity.rest.token.storage.gorm.tokenValuePropertyName = "token"
 grails.plugin.springsecurity.rest.token.storage.gorm.usernamePropertyName = "email"
+grails.plugin.springsecurity.providerNames = [
+        'socialAuthenticationProvider',
+        'daoAuthenticationProvider',
+        'anonymousAuthenticationProvider',
+        'rememberMeAuthenticationProvider']
 // Added by the Spring Security Core plugin:
 //grails.plugin.springsecurity.auth.loginFormUrl = '/'
 
@@ -149,6 +155,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/**/css/**':                     ['permitAll'],
         '/**/images/**':                  ['permitAll'],
         '/**/favicon.ico':                ['permitAll'],
+        '/test/**':                       ['permitAll'],
         '/**':                            ['ROLE_ADMIN', 'ROLE_USER'],
         '/web/**':                        ['IS_AUTHENTICATED_ANONYMOUSLY'],
         '/user/**':                       ['IS_AUTHENTICATED_ANONYMOUSLY']

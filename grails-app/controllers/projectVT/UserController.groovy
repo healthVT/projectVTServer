@@ -9,24 +9,24 @@ class UserController {
 
     static scaffold = true
     def springSecurityService
+    def socialService
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
-    def loginOrRegister(String email, String password, String name, int age, String gender, int height, int weight, String ethnicity, boolean register){
+    def register(String email, String password, String name, int age, String gender, int height, int weight, String ethnicity, String socialToken, String socialMedia){
         def user = User.findByEmail(email)
         Map result = [:]
         try{
             if(user){
                 //User exists
-                result = [success: false, login: true]
-            }else{
-                if(register){
-                    user = new User(email: email, password: password, name: name, age: age, gender: gender, height: height, weight: weight, ethnicity: ethnicity).save(flush:true, failOnError: true)
-                    new UserRole(user: user, role: Role.findByAuthority("ROLE_USER")).save(flush: true, failOnError: true)
-                    result = [success: true, login: true]
-                }else{
-                    result = [success: false, register: true, message: "Please Register"]
+                result = [success: false, message: "The email already registered."]
+            } else {
+                user = new User(email: email, password: password, name: name, age: age, gender: gender, height: height, weight: weight, ethnicity: ethnicity).save(flush: true, failOnError: true)
+                if(socialToken){
+                    def socialAuth = socialService.validateToken(socialToken)
+                    socialAuth.success ? new SocialAuth(user: user, socialMedia: socialMedia, socialId: socialAuth.socialId).save(failOnError: true) : null
                 }
-
+                new UserRole(user: user, role: Role.findByAuthority("ROLE_USER")).save(flush: true, failOnError: true)
+                result = [success: true, login: true]
             }
         }catch(Exception e){
             log.error("Login or register error: ", e);

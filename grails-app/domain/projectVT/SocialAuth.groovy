@@ -6,8 +6,8 @@ class SocialAuth {
     String socialMedia
     String socialId
 
-    Date dateCreated
-    Date lastLogin
+    Date dateCreated = new Date()
+    Date lastLogin = new Date()
 
     static constraints = {
         user nullable: false
