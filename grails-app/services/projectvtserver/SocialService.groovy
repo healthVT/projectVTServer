@@ -9,8 +9,6 @@ import groovyx.net.http.RESTClient
 @Transactional
 class SocialService {
 
-    final String tokenInfo = "https://www.googleapis.com/"
-
     def validateToken(String token){
 
         def result = [success: false]
@@ -24,9 +22,13 @@ class SocialService {
                     result = [success: true, socialId: json.user_id]
                 }
             }
+
         }catch(Exception e){
-            e.printStackTrace()
+            log.error(e.message);
+
         }
+        return result
+
 
     }
 

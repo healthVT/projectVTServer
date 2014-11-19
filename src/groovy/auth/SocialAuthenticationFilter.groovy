@@ -1,10 +1,12 @@
 package auth
 
+import com.odobo.grails.plugin.springsecurity.rest.RestAuthenticationSuccessHandler
 import com.odobo.grails.plugin.springsecurity.rest.RestAuthenticationToken
+import grails.converters.JSON
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.Authentication
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.web.filter.GenericFilterBean
+import projectVT.User
 
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
@@ -21,7 +23,7 @@ class SocialAuthenticationFilter extends GenericFilterBean {
     String endpointUrl
     def tokenGenerator
     def tokenStorageService
-    AuthenticationSuccessHandler authenticationSuccessHandler
+    RestAuthenticationSuccessHandler authenticationSuccessHandler
     AuthenticationManager authenticationManager
 
     @Override
@@ -52,21 +54,28 @@ class SocialAuthenticationFilter extends GenericFilterBean {
             println email
             println socialMedia
 
-            SocialAuthenticationToken authenticationRequest = new SocialAuthenticationToken(accessToken, email, socialMedia)
-            Authentication auth = authenticationManager.authenticate(authenticationRequest)
+            def user = User.findWhere(email: email)
 
-            if(auth.isAuthenticated()){
-                def tokenValue = tokenGenerator.generateToken()
-                println tokenValue + " <-- token"
-                tokenStorageService.storeToken(tokenValue, auth.principal)
-                RestAuthenticationToken restAuthenticationToken = new RestAuthenticationToken(auth.principal, ("N/A"), auth.authorities, tokenValue)
-                authenticationSuccessHandler.onAuthenticationSuccess(httpServletRequest, httpServletResponse, restAuthenticationToken)
+            if(user){
+                SocialAuthenticationToken authenticationRequest = new SocialAuthenticationToken(accessToken, email, socialMedia)
+                Authentication auth = authenticationManager.authenticate(authenticationRequest)
+
+                if(auth.isAuthenticated()){
+                    def tokenValue = tokenGenerator.generateToken()
+                    println tokenValue + " <-- token"
+                    tokenStorageService.storeToken(tokenValue, auth.principal)
+                    RestAuthenticationToken restAuthenticationToken = new RestAuthenticationToken(auth.principal, ("N/A"), auth.authorities, tokenValue)
+                    authenticationSuccessHandler.onAuthenticationSuccess(httpServletRequest, httpServletResponse, restAuthenticationToken)
+
+                }
+            }else{
+                response.contentType = 'application/json'
+                response.characterEncoding = 'UTF-8'
+                response << [success: true, isUser: false] as JSON
+                return
             }
-
-
-
         }
-        //chain.doFilter(request, response)
+
 
     }
 }

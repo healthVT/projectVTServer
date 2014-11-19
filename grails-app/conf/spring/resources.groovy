@@ -1,5 +1,6 @@
 import auth.SocialAuthenticationFilter
 import auth.SocialAuthenticationProvider
+import com.odobo.grails.plugin.springsecurity.rest.token.rendering.RestAuthenticationTokenJsonRenderer
 
 // Place your Spring DSL code here
 beans = {
@@ -7,7 +8,7 @@ beans = {
         authenticationManager = ref('authenticationManager')
         tokenGenerator = ref('tokenGenerator')
         tokenStorageService = ref('tokenStorageService')
-        authenticationSuccessHandler = ref('authenticationSuccessHandler')
+        authenticationSuccessHandler = ref('restAuthenticationSuccessHandler')
         endpointUrl = "/socialMedia"
     }
 
