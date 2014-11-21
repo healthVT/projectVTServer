@@ -12,31 +12,29 @@ class UserController {
     def socialService
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
-    def register(String email, String password, String name, int age, String gender, int height, int weight, String ethnicity, String socialToken, String socialMedia){
+    def register(String email, String password, String name, String birthday, String gender, int height, int weight, String ethnicity, String socialToken, String socialMedia){
+        println params;
         def user = User.findByEmail(email)
+        Date birthdayDate = new Date().parse("yyyy-MM-dd", birthday)
         Map result = [:]
         try{
             if(user){
                 //User exists
                 result = [success: false, message: "The email already registered."]
             } else {
-                user = new User(email: email, password: password, name: name, age: age, gender: gender, height: height, weight: weight, ethnicity: ethnicity).save(flush: true, failOnError: true)
+                user = new User(email: email, password: password, name: name, birthday: birthdayDate, gender: gender, height: height, weight: weight, ethnicity: ethnicity).save(flush: true, failOnError: true)
                 if(socialToken){
                     def socialAuth = socialService.validateToken(socialToken)
                     socialAuth.success ? new SocialAuth(user: user, socialMedia: socialMedia, socialId: socialAuth.socialId).save(failOnError: true) : null
                 }
                 new UserRole(user: user, role: Role.findByAuthority("ROLE_USER")).save(flush: true, failOnError: true)
-                result = [success: true, login: true]
+                result = [success: true]
             }
         }catch(Exception e){
             log.error("Login or register error: ", e);
             result = [success: false, message: "The server incounter error stage, please try it again later."]
         }
-
-        if(result.success){
-            redirect(controller: "login", params: [email: email, password: password])
-        }
-
+        
         render result as JSON
     }
 

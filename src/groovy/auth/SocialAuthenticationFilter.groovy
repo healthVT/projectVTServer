@@ -75,6 +75,8 @@ class SocialAuthenticationFilter extends GenericFilterBean {
                 response << result.toString()
                 return
             }
+        }else{
+            chain.doFilter(request, response)
         }
 
 
