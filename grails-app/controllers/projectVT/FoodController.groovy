@@ -42,7 +42,8 @@ class FoodController {
         render result as JSON
     }
 
-    def getVitaminDailyResult(String foodList, String gender, int age){
+    def getVitaminDailyResult(String foodList){
+        User user = springSecurityService.getCurrentUser() as User
         def foodAndAmountArray = foodList.split(",")
 
         int vitaminA = 0
@@ -56,7 +57,7 @@ class FoodController {
         int vitaminE = 0
         int vitaminK = 0
 
-        gender = gender ?: "Male"
+        String gender = user.gender
         def vitaminRequire = DailyAmount.findByGender(gender)
         Map requireMap = [a:vitaminRequire.vitaminA,
                 b1:vitaminRequire.vitaminB1,
@@ -108,7 +109,7 @@ class FoodController {
 
         try{
 
-            User user = springSecurityService.getCurrentUser() as User
+
             def today = DateTime.now().withTime(0, 0, 0, 0)
             UserDailyFood.executeUpdate("DELETE UserDailyFood WHERE user = :user AND date BETWEEN :todayStart AND :todayEnd", [user: user, todayStart: today.toDate(), todayEnd: today.plusDays(1).toDate()])
 
