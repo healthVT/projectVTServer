@@ -126,7 +126,8 @@ grails.plugin.springsecurity.rest.token.validation.enableAnonymousAccess = true
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter',  // Stateless chain
         '/user/**': 'anonymousAuthenticationFilter,restTokenValidationFilter,restExceptionTranslationFilter,filterInvocationInterceptor',
-        '/test/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'
+        '/test/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter',
+        '/ip/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'
         //'/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter',                                          // Traditional chain
 ]
 
@@ -158,7 +159,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/test/**':                       ['permitAll'],
         '/**':                            ['ROLE_ADMIN', 'ROLE_USER'],
         '/web/**':                        ['IS_AUTHENTICATED_ANONYMOUSLY'],
-        '/user/**':                       ['IS_AUTHENTICATED_ANONYMOUSLY']
+        '/user/**':                       ['IS_AUTHENTICATED_ANONYMOUSLY'],
+        '/ip/**':                       ['IS_AUTHENTICATED_ANONYMOUSLY']
 ]
 
 

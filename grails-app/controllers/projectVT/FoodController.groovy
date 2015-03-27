@@ -11,19 +11,17 @@ import java.text.SimpleDateFormat
 
 @Secured(['ROLE_USER'])
 class FoodController {
+    def sessionFactory
     def springSecurityService
     def utilService
     def index() { }
 
     def getFoodList(String category){
-        def foods = Food.findAll()
-        String foodList = ""
-        foods.each(){ food->
-            foodList += food.name + ","
-        }
 
-        def result = [foodList: foodList.substring(0, foodList.length()-1), success: true]
-        render result as JSON
+        def session = sessionFactory.getCurrentSession()
+        def result = session.createSQLQuery("SELECT Shrt_Desc FROM sheet").list()
+
+        render([success: true, foodList: result] as JSON)
     }
 
     def getVitaminByFood(String foodName){
