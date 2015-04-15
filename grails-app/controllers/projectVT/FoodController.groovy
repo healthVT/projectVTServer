@@ -21,7 +21,13 @@ class FoodController {
         def session = sessionFactory.getCurrentSession()
         def result = session.createSQLQuery("SELECT name FROM food").list()
 
-        render([success: true, foodList: result] as JSON)
+        def resultString = ""
+        result.each(){
+            resultString += ",$it"
+        }
+
+
+        render([success: true, foodList: resultString.substring(1)] as JSON)
     }
 
     def getVitaminByFood(String foodName){
