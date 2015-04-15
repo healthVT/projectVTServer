@@ -19,7 +19,7 @@ class FoodController {
     def getFoodList(String category){
 
         def session = sessionFactory.getCurrentSession()
-        def result = session.createSQLQuery("SELECT Shrt_Desc FROM sheet").list()
+        def result = session.createSQLQuery("SELECT name FROM food").list()
 
         render([success: true, foodList: result] as JSON)
     }
