@@ -10,6 +10,7 @@ class WeddingController {
 
        wedding ?:  new Wedding(email: email, firstName: firstName, lastName: lastName, address: address, message: message, ip: ip, commingWedding: coming, adults: adults, kids: kids).save(failOnError: true)
 
+        return [success: true]
     }
 
     def ip(String ip){
