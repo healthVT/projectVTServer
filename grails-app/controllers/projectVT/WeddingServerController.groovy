@@ -15,7 +15,11 @@ class WeddingServerController {
         render([success: true] as JSON)
     }
 
-    def ip(String ip){
-        Wedding.findByIp(ip) ?: new Wedding(ip: ip).save()
+    def saveIp(String ip){
+        def wedding = Wedding.findByIp(ip) ?: new Wedding(ip: ip)
+        wedding.loginTimes++
+        wedding.save(failOnError: true)
+
+        render([success: true] as JSON)
     }
 }
