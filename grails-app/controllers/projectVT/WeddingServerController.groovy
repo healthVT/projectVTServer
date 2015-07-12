@@ -10,7 +10,18 @@ class WeddingServerController {
             wedding = Wedding.findByIp(ip)
         }
 
-        wedding ?:  new Wedding(email: email, firstName: firstName, lastName: lastName, address: address, message: message, ip: ip, commingWedding: coming, adults: adults, kids: kids).save(failOnError: true)
+        wedding ?:  new Wedding(ip: ip)
+
+        wedding.email = email
+        wedding.firstName=  firstName
+        wedding.lastName = lastName
+        wedding.address = address
+        wedding.message = message
+        wedding.commingWedding = coming
+        wedding.adults = adults
+        wedding.kids = kids
+
+        wedding.save(failOnError: true)
 
         render([success: true] as JSON)
     }
