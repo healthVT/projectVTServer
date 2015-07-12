@@ -21,7 +21,7 @@ class WeddingServerController {
         wedding.adults = adults
         wedding.kids = kids
 
-        wedding.save(failOnError: true)
+        wedding.save(failOnError: true, flush: true)
 
         render([success: true] as JSON)
     }
@@ -29,7 +29,7 @@ class WeddingServerController {
     def saveIp(String ip){
         def wedding = Wedding.findByIp(ip) ?: new Wedding(ip: ip)
         wedding.loginTimes = wedding.loginTimes + 1
-        wedding.save(failOnError: true)
+        wedding.save(failOnError: true, flush: true)
 
         render([success: true] as JSON)
     }
