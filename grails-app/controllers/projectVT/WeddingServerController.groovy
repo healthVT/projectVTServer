@@ -1,5 +1,7 @@
 package projectVT
 
+import grails.converters.JSON
+
 class WeddingServerController {
 
     def index(String email, String firstName, String lastName, String address, String message, String ip, int coming, int adults, int kids) {
@@ -10,7 +12,7 @@ class WeddingServerController {
 
         wedding ?:  new Wedding(email: email, firstName: firstName, lastName: lastName, address: address, message: message, ip: ip, commingWedding: coming, adults: adults, kids: kids).save(failOnError: true)
 
-        return [success: true]
+        render([success: true] as JSON)
     }
 
     def ip(String ip){
