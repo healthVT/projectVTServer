@@ -10,7 +10,7 @@ class WeddingServerController {
             wedding = Wedding.findByIp(ip)
         }
 
-        wedding ?:  new Wedding(ip: ip)
+         wedding = wedding ?:  new Wedding(ip: ip)
 
         wedding.email = email
         wedding.firstName=  firstName
