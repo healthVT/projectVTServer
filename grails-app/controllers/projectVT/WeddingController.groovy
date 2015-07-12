@@ -1,6 +1,6 @@
 package projectVT
 
-class WeddingController {
+class WeddingServerController {
 
     def index(String email, String firstName, String lastName, String address, String message, String ip, int coming, int adults, int kids) {
         def wedding = null
