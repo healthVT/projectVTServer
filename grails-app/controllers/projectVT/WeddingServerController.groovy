@@ -31,15 +31,21 @@ class WeddingServerController {
     def getPersonalMessage(String email, String name){
         def personalMessage = null
         if(email){
-            personalMessage = PersonalMessage.findByPossibleEmailLike(email)
+            personalMessage = PersonalMessage.findAllByPossibleEmailLike(email)
         }else if(name){
             def nameArray = name.split(' ')
             def query = ""
-            nameArray.each(){
+            nameArray.each() {
                 query += "%" + it + "%"
             }
-            personalMessage = PersonalMessage.findByPossibleNameLike(query)
+            personalMessage = PersonalMessage.findAllByPossibleNameLike(query)
         }
-        render([success: true, message: personalMessage] as JSON)
+
+        if(personalMessage.size() > 0){
+            log.error("I got mutiple result!!!!!!!!!!!!!!!!! $name, $email")
+
+            render([success: true, message: null] as JSON)
+        }
+        render([success: true, message: personalMessage?.first()] as JSON)
     }
 }
