@@ -40,7 +40,6 @@ class WeddingServerController {
             }
             personalMessage = PersonalMessage.findByPossibleNameLike(query)
         }
-
-        render(personalMessage as JSON)
+        render([success: true, message: personalMessage] as JSON)
     }
 }
