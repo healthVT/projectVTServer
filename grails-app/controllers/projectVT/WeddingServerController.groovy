@@ -38,13 +38,16 @@ class WeddingServerController {
             nameArray.each() {
                 query += "%" + it + "%"
             }
+            
+            println query
             personalMessage = PersonalMessage.findAllByPossibleNameLike(query)
         }
 
-        if(personalMessage.size() > 1){
+        if(personalMessage && personalMessage.size() > 1){
             log.error("I got mutiple result!!!!!!!!!!!!!!!!! $name, $email")
 
         }
+
         render([success: true, message: personalMessage?.size() == 1 ? personalMessage?.first() : null] as JSON)
     }
 }
