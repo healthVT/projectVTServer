@@ -20,7 +20,7 @@ class Wedding {
     }
 
     static constraints = {
-        email nullable: true
+        email nullable: true, unique: true
         firstName nullable: true
         lastName nullable: true
         address nullable: true
