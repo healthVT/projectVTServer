@@ -1,6 +1,7 @@
 package projectVT
 
 import grails.converters.JSON
+import org.apache.commons.codec.binary.Base64
 
 class WeddingServerController {
 
@@ -28,7 +29,15 @@ class WeddingServerController {
         render([success: true] as JSON)
     }*/
 
-    def getPersonalMessage(String email, String name){
+    def getPersonalMessage(String encodedEmail, String encodedName){
+        byte[] decodedEmail = encodedEmail ? Base64.decodeBase64(encodedEmail) : null
+        byte[] decodedName = encodedName ? Base64.decodeBase64(encodedName) : null
+
+        String email = decodedEmail ? new String(decodedEmail, "UTF-8") : null
+        String name = decodedName ? new String(decodedName, "UTF-8") : null
+        println email
+        println name
+
         def personalMessage = null
         if(email){
             personalMessage = PersonalMessage.findAllByPossibleEmailLike("%$email%")
@@ -38,7 +47,7 @@ class WeddingServerController {
             nameArray.each() {
                 query += "%" + it + "%"
             }
-            
+
             println query
             personalMessage = PersonalMessage.findAllByPossibleNameLike(query)
         }
