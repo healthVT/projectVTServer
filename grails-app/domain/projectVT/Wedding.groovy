@@ -5,7 +5,6 @@ class Wedding {
     String email
     int commingWedding
     String firstName
-    String lastName
     String address
     int adults
     int kids
@@ -13,6 +12,7 @@ class Wedding {
     String ip
     Date dateCreated
     int loginTimes
+    int vegetarian
 
     static mapping = {
         address type: 'text'
@@ -22,7 +22,6 @@ class Wedding {
     static constraints = {
         email nullable: true, unique: true
         firstName nullable: true
-        lastName nullable: true
         address nullable: true
         message nullable: true
         ip nullable: true

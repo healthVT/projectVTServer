@@ -3,23 +3,22 @@ package projectVT
 import grails.converters.JSON
 import org.apache.commons.codec.binary.Base64
 
-class WeddingServerController {
-
+class WeddingController {
     def index(){
-        [weddingInstanceList: Wedding.list()]
+        [weddingInstanceList: Wedding.list(), weddingInstanceCount: Wedding.list().size()]
     }
 
-    def add(String email, String firstName, String lastName, String address, String message, String ip, int coming, int adults, int kids) {
+    def add(String email, String firstName, String address, String message, String ip, int coming, int adults, int kids, int vegetarian) {
         def wedding = Wedding.findByEmail(email) ?:  new Wedding(email: email)
 
         wedding.firstName=  firstName
-        wedding.lastName = lastName
         wedding.address = address
         wedding.message = message
         wedding.commingWedding = coming
         wedding.adults = adults
         wedding.kids = kids
         wedding.ip = ip
+        wedding.vegetarian = vegetarian
 
         wedding.save(failOnError: true, flush: true)
 
