@@ -17,10 +17,10 @@ class BootStrap {
         new Role(authority: 'ROLE_USER').save(flush: true)
 
 
-        def testUser = new User(email: 'admin', password: 'admin', firstName: "Jay", lastName: "Chen").save(flush: true)
+        def testUser = User.findByEmail('joyce') ?: new User(email: 'joyce', password: 'jay', firstName: "Jay", lastName: "Chen", name: "Jay Chen", gender: "MALE", ethnicity: "people").save(flush: true, failOnError: true)
 
 
-        new UserRole(role: Role.get(1), user: testUser).save(flush: true)
+        new UserRole(role: adminRole, user: testUser).save(flush: true)
         SpringSecurityUtils.clientRegisterFilter('socialAuthenticationFilter', SecurityFilterPosition.SECURITY_CONTEXT_FILTER.order + 50)
 
         JSON.registerObjectMarshaller(UserDailyVitamin){
