@@ -1,9 +1,11 @@
 package projectVT
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.codec.binary.Base64
 
 class WeddingController {
+    @Secured(['ROLE_USER'])
     def index(){
         [weddingInstanceList: Wedding.list(), weddingInstanceCount: Wedding.list().size()]
     }
