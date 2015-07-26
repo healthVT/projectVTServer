@@ -62,7 +62,7 @@ class WeddingController {
 
         personalMessage.first().readed = true
 
-        personalMessage.save()
+        personalMessage.first().save()
 
         render([success: true, message: personalMessage?.size() == 1 ? personalMessage?.first() : null] as JSON)
     }
