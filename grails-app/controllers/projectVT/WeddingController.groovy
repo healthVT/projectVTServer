@@ -21,6 +21,8 @@ class WeddingController {
         wedding.ip = ip
         wedding.vegetarian = vegetarian
 
+        println "Name: $firstName, coming: $coming, adults: $adults, $kids: $kids, vegetarian: $vegetarian, message: $message, address: $address"
+
         wedding.save(failOnError: true, flush: true)
 
         render([success: true] as JSON)
@@ -60,9 +62,8 @@ class WeddingController {
 
         }
 
-        personalMessage.first().readed = true
-
-        personalMessage.first().save(flush: true, failOnError: true)
+        personalMessage?.first()?.readed = true
+        personalMessage?.first()?.save(flush: true, failOnError: true)
 
         render([success: true, message: personalMessage?.size() == 1 ? personalMessage?.first() : null] as JSON)
     }
