@@ -40,8 +40,6 @@ class WeddingController {
 
         String email = decodedEmail ? new String(decodedEmail, "UTF-8") : null
         String name = decodedName ? new String(decodedName, "UTF-8") : null
-        println email
-        println name
 
         def personalMessage = null
         if(email){
@@ -61,6 +59,10 @@ class WeddingController {
             log.error("I got mutiple result!!!!!!!!!!!!!!!!! $name, $email")
 
         }
+
+        personalMessage.first().readed = true
+
+        personalMessage.save()
 
         render([success: true, message: personalMessage?.size() == 1 ? personalMessage?.first() : null] as JSON)
     }
