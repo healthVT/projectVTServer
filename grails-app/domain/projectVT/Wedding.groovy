@@ -13,6 +13,7 @@ class Wedding {
     Date dateCreated
     int loginTimes
     int vegetarian
+    int kidChair
 
     static mapping = {
         address type: 'text'

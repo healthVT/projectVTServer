@@ -9,17 +9,18 @@ class WeddingController {
         [weddingInstanceList: Wedding.list(), weddingInstanceCount: Wedding.list().size()]
     }
 
-    def add(String email, String firstName, String address, String message, String ip, int coming, int adults, int kids, int vegetarian) {
+    def add(String email, String firstName, String address, String message, String ip, int coming, int adult, int kid, int kidChair, int vegetarian) {
         def wedding = Wedding.findByEmail(email) ?:  new Wedding(email: email)
 
         wedding.firstName=  firstName
         wedding.address = address
         wedding.message = message
         wedding.commingWedding = coming
-        wedding.adults = adults
-        wedding.kids = kids
+        wedding.adults = adult
+        wedding.kids = kid
         wedding.ip = ip
         wedding.vegetarian = vegetarian
+        wedding.kidChair = kidChair
 
         println "Name: $firstName, coming: $coming, adults: $adults, $kids: $kids, vegetarian: $vegetarian, message: $message, address: $address"
 
