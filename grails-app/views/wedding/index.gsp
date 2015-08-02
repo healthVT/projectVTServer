@@ -38,6 +38,8 @@
 
                         <g:sortableColumn property="kids" title="${message(code: 'wedding.ip.label', default: 'Kids')}" />
 
+                        <g:sortableColumn property="kidChair" title="${message(code: 'wedding.ip.label', default: 'Kid Chair')}" />
+
                         <g:sortableColumn property="vegetarian" title="${message(code: 'wedding.ip.label', default: 'Vegetarian')}" />
 					
 					</tr>
@@ -60,6 +62,8 @@
                         <td>${weddingInstance.adults}</td>
 
                         <td>${weddingInstance.kids}</td>
+
+                        <td>${weddingInstance.kidChair}</td>
 
                         <td>${weddingInstance.vegetarian}</td>
 
