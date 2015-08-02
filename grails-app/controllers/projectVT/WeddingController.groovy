@@ -36,7 +36,7 @@ class WeddingController {
         render([success: true] as JSON)
     }*/
 
-    def getPersonalMessage(String encodedEmail, String encodedName){
+    def getPersonalMessage(String encodedEmail, String encodedName, String ip){
         byte[] decodedEmail = encodedEmail ? Base64.decodeBase64(encodedEmail) : null
         byte[] decodedName = encodedName ? Base64.decodeBase64(encodedName) : null
 
@@ -48,13 +48,23 @@ class WeddingController {
             personalMessage = PersonalMessage.findAllByPossibleEmailLike("%$email%")
         }else if(name){
             def nameArray = name.split(' ')
-            def query = ""
-            nameArray.each() {
-                query += "%" + it + "%"
+            String query = "where possibleName like "
+            for(int i=0;i<nameArray.size();i++){
+                if(i!=0){
+                    query += " or possibleName like "
+                }
+                query += "'%" + nameArray[i] + "%' "
+
             }
 
             println query
-            personalMessage = PersonalMessage.findAllByPossibleNameLike(query)
+            personalMessage = PersonalMessage.findAll("From PersonalMessage $query")
+
+
+            def wedding = ip ? Wedding.findByIp(ip) : null
+            if (wedding) {
+                println "One IP doing more than one search for $nameArray, ${name}, IP: ${wedding.ip}"
+            }
         }
 
         if(personalMessage && personalMessage.size() > 1){
@@ -62,8 +72,13 @@ class WeddingController {
 
         }
 
-        personalMessage?.first()?.readed = true
-        personalMessage?.first()?.save(flush: true, failOnError: true)
+        if(personalMessage.size() != 0 ){
+            personalMessage?.first()?.readed = true
+            personalMessage?.first()?.save(flush: true, failOnError: true)
+        }
+
+
+
 
         render([success: true, message: personalMessage?.size() == 1 ? personalMessage?.first() : null] as JSON)
     }
