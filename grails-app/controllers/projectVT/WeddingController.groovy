@@ -22,7 +22,7 @@ class WeddingController {
         wedding.vegetarian = vegetarian
         wedding.kidChair = kidChair
 
-        println "Name: $firstName, coming: $coming, adults: $adults, $kids: $kids, vegetarian: $vegetarian, message: $message, address: $address"
+        println "Name: $firstName, coming: $coming, adults: $adult, Kids: $kid, kidChair: $kidChair, vegetarian: $vegetarian, message: $message, address: $address"
 
         wedding.save(failOnError: true, flush: true)
 
